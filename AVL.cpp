@@ -37,7 +37,7 @@ private:
             T->rigth = temp2->left;
             temp2->left = T;
             T = temp;
-            return temp;
+            return T;
         }
     }
     int factor_Equilibrio(Node* temp){
