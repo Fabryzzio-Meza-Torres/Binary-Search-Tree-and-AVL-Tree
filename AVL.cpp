@@ -82,9 +82,59 @@ private:
             return search_Node(T->right, dato);
         }
     }
+    Node* minValueNode(Node* node) {
+        Node* T = node;
+        while (T != nullptr && T->left != nullptr) {
+            T = T->left;
+        }
+        return T;
+    }
+
+    Node* removeNode(Node* T, int dato) {
+        if (T == nullptr) {
+            return T;
+        }
+        if (T->value > dato) {
+            T->left = removeNode(T->left, dato);
+        } else if (T->value < dato) {
+            T->right = removeNode(T->right, dato);
+        } else {
+            if (T->left == nullptr || T->right == nullptr) {
+                Node* temp = T->left ? T->left : T->right; // si temp no es nulo el puntero se asigna T->left, caso contrario T->right;
+
+                // Hoja
+                if (temp == nullptr) {
+                    temp = T;
+                    T = nullptr;
+                } else {
+                    T->left = temp->left;
+                    T->right = temp->right;
+                    T->value = temp->value;
+                    T->altura = temp->altura;
+                }
+                delete temp;
+            } else {
+                //ambos hijos
+                Node* temp = minValueNode(T->right); //trae el minimo valor del subarbol derecho del arbol
+                T->value = temp->value;
+                T->right = removeNode(T->right, temp->value);
+            }
+        }
+        if(T == nullptr){ // este es para en caso de que el nodo luego de las operaciones quedara nulo retorne ese valor
+            return T;
+        }
+        T->altura = 1 + max(altura(T->left), altura(T->right));
+        int factor = balance_factor(T);
+        rotate(T);
+        return T; // Devuelve el puntero al nodo modificado
+    }
+
 
 public:
     AVL() : raiz(nullptr) {}
+    bool remove(int dato){
+        return removeNode(raiz,dato) != nullptr;
+    }
 
     void insert(int dato) {
         raiz = inserta(raiz, dato);
@@ -93,6 +143,7 @@ public:
     bool search(int dato) {
         return search_Node(raiz, dato) != nullptr;
     }
+
     ~AVL() {
     }
 };
@@ -107,7 +158,9 @@ int main() {
     arbol.insert(6);
     arbol.insert(8);
 
-    int valor = 2;
+    int valor = 8;
+    cout << boolalpha << arbol.search(valor);
+    cout << boolalpha << arbol.remove(valor);
     cout << boolalpha << arbol.search(valor);
     //cout << "¿El valor " << valor << " esta en el arbol? " << (arbol.search(valor) ? "Sí" : "No") << endl;
 
