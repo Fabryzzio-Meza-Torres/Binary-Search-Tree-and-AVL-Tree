@@ -23,31 +23,41 @@ private:
         }
     }
     Node* raiz;
-    Node* rotate_right(Node* T){
-        Node* temp = T->left;
-        T->left = temp->rigth;
-        temp->rigth = T;
-        T = temp;
-    };
-    Node* rotate_left(Node* T){
-        Node* temp = T;
-        temp = T->rigth;
-        Node* temp2 = T;
-        T->rigth = temp2->left;
-        temp2->left = T;
-        T = temp;
+    Node* rotate(Node* T){
+        if(factor_Equilibrio(T) > 1){
+            Node* temp = T->left;
+            T->left = temp->rigth;
+            temp->rigth = T;
+            T = temp;
+            return temp;
+        }else if(factor_Equilibrio(T) < -1){
+            Node* temp = T;
+            temp = T->rigth;
+            Node* temp2 = T;
+            T->rigth = temp2->left;
+            temp2->left = T;
+            T = temp;
+            return temp;
+        }
     }
     int factor_Equilibrio(Node* temp){
         return altura(temp->left)-altura(temp->rigth);
     }
 public:
-    void insert();
-    void eliminar();
-    void buscar();
-    void imprimir();
+    void insert(){
+
+    }
+    void eliminar(){
+
+    }
+    void buscar(){
+
+    }
+    void imprimir(){
+
+    }
 
 };
-
 int main() {
     std::cout << "Hello, World!" << std::endl;
     return 0;
