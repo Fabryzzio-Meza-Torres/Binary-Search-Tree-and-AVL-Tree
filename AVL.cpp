@@ -1,18 +1,46 @@
 #include <iostream>
 #include <algorithm>
 using namespace std;
+template<typename T>
 struct Node {
-    int value;
+    T value;
     Node* left;
     Node* right;
     int altura;
-    Node(int dato) : value(dato), altura(0), left(nullptr), right(nullptr) {}
+    Node(T dato) : value(dato), altura(0), left(nullptr), right(nullptr) {}
 };
-
+template<typename T>
 class AVL {
 private:
-    Node* raiz;
-    Node* padre(Node* temp, int dato){
+    Node<T>* raiz;
+    string displayInOrder(Node<T> *node, string &result) {
+        if(node==nullptr){
+            return result;
+        }
+        displayInOrder(node->left, result);
+        result+= node->data + " ";
+        displayInOrder(node->right, result);
+        return result;
+    };
+    string displayPreOrder(Node<T> *node, string &result){
+        if(node==nullptr){
+            return result;
+        }
+        result+= node->data + " ";
+        displayInOrder(node->left, result);
+        displayInOrder(node->right, result);
+        return result;
+    };
+    string displayPostOrder(Node<T> *node, string &result){
+        if(node==nullptr){
+            return result;
+        }
+        displayInOrder(node->left, result);
+        displayInOrder(node->right, result);
+        result+= node->data + " ";
+        return result;
+    };
+    Node<T>* padre(Node<T>* temp, int dato){
         if(temp == nullptr || raiz->value == dato){
             return nullptr;
         }
@@ -25,7 +53,7 @@ private:
         else
             return padre(temp->right, dato);
     }
-    int altura(Node* temp) {
+    int altura(Node<T>* temp) {
         if (temp == nullptr) {
             return 0;
         } else {
@@ -33,112 +61,115 @@ private:
         }
     }
 
-    Node* rotate_right(Node*& T) {
-        Node* temp = T->left;
-        T->left = temp->right;
-        temp->right = T;
-        T = temp;
-        return T;
+    Node<T>* rotate_right(Node<T>*& th) {
+        Node<T>* temp = th->left;
+        th->left = temp->right;
+        temp->right = th;
+        th = temp;
+        return th;
     }
 
-    Node* rotate_left(Node*& T) {
-        Node* temp = T;
-        temp = T->right;
-        Node* temp2 = T;
-        T->right = temp2->left;
-        temp2->left = T;
-        T = temp;
-        return T;
+    Node<T>* rotate_left(Node<T>*& th) {
+        Node<T>* temp = th;
+        temp = th->right;
+        Node<T>* temp2 = th;
+        th->right = temp2->left;
+        temp2->left = th;
+        th = temp;
+        return th;
     }
 
-    void rotate(Node*& T) {
-        if (balance_factor(T) > 1) {
-            if (balance_factor(T->left) < 0) {
-                T->left = rotate_left(T->left);
+    void rotate(Node<T>*& th) {
+        if (balance_factor(th) > 1) {
+            if (balance_factor(th->left) < 0) {
+                th->left = rotate_left(th->left);
             }
-            T = rotate_right(T);
-        } else if (balance_factor(T) < -1) {
-            if (balance_factor(T->right) > 0) {
-                T->right = rotate_right(T->right);
+            th = rotate_right(th);
+        } else if (balance_factor(th) < -1) {
+            if (balance_factor(th->right) > 0) {
+                th->right = rotate_right(th->right);
             }
-            T = rotate_left(T);
+            th = rotate_left(th);
         }
-        T->altura = 1 + max(altura(T->left), altura(T->right));
+        th->altura = 1 + max(altura(th->left), altura(th->right));
     }
 
-    int balance_factor(Node* temp) {
+    int balance_factor(Node<T>* temp) {
         return altura(temp->left) - altura(temp->right);
     }
-    Node* inserta(Node*& T, int dato) {
-        if (T == nullptr) {
+    Node<T>* inserta(Node<T>*& th, int dato) {
+        if (th == nullptr) {
             return new Node(dato);
-        } else if (dato < T->value) {
-            T->left = inserta(T->left, dato);
-        } else if (dato > T->value) {
-            T->right = inserta(T->right, dato);
+        } else if (dato < th->value) {
+            th->left = inserta(th->left, dato);
+        } else if (dato > th->value) {
+            th->right = inserta(th->right, dato);
         } else {
-            return T;
+            return th;
         }
-        T->altura = 1 + max(altura(T->left), altura(T->right));
-        rotate(T);
-        return T;
+        th->altura = 1 + max(altura(th->left), altura(th->right));
+        rotate(th);
+        return th;
     }
-    Node* search_Node(Node* T, int dato) {
-        if (T == nullptr) {
+    Node<T>* search_Node(Node<T>* th, int dato) {
+        if (th == nullptr) {
             return nullptr;
-        } else if (T->value == dato) {
-            return T;
-        } else if (dato < T->value) {
-            return search_Node(T->left, dato);
+        } else if (th->value == dato) {
+            return th;
+        } else if (dato < th->value) {
+            return search_Node(th->left, dato);
         } else {
-            return search_Node(T->right, dato);
+            return search_Node(th->right, dato);
         }
     }
-    Node* minValueNode(Node* node) {
-        Node* T = node;
-        while (T != nullptr && T->left != nullptr) {
-            T = T->left;
+    Node<T>* minValueNode(Node<T>* node) {
+        Node<T>* th = node;
+        while (th != nullptr && th->left != nullptr) {
+            th = th->left;
         }
-        return T;
+        return th;
     }
 
-    Node* removeNode(Node* T, int dato) {
-        if (T == nullptr) {
-            return T;
+    Node<T>* removeNode(Node<T>* th, int dato) {
+        if (th == nullptr) {
+            return nullptr;
         }
-        if (T->value > dato) {
-            T->left = removeNode(T->left, dato);
-        } else if (T->value < dato) {
-            T->right = removeNode(T->right, dato);
+        if (th->value > dato) {
+            th->left = removeNode(th->left, dato);
+        } else if (th->value < dato) {
+            th->right = removeNode(th->right, dato);
         } else {
-            if (T->left == nullptr || T->right == nullptr) {
-                Node* temp = T->left ? T->left : T->right; // si temp no es nulo el puntero se asigna T->left, caso contrario T->right;
+            if (th->left == nullptr || th->right == nullptr) {
+                Node<T>* temp = th->left ? th->left : th->right; // si temp no es nulo el puntero se asigna T->left, caso contrario T->right;
 
                 // Hoja
                 if (temp == nullptr) {
-                    temp = T;
-                    T = nullptr;
+                    delete th;
+                    return nullptr;
                 } else {
-                    T->left = temp->left;
-                    T->right = temp->right;
-                    T->value = temp->value;
-                    T->altura = temp->altura;
+                    if(th == raiz){
+                        raiz = temp;
+                    }
+                    th->left = temp->left;
+                    th->right = temp->right;
+                    th->value = temp->value;
+                    th->altura = temp->altura;
                 }
                 delete temp;
             } else {
                 //ambos hijos
-                Node* temp = minValueNode(T->right); //trae el minimo valor del subarbol derecho del arbol
-                T->value = temp->value;
-                T->right = removeNode(T->right, temp->value);
+                Node<T>* temp = minValueNode(th->right); //trae el minimo valor del subarbol derecho del arbol
+                th->value = temp->value;
+                th->right = removeNode(th->right, temp->value);
             }
         }
-        if(T == nullptr){ // este es para en caso de que el nodo luego de las operaciones quedara nulo retorne ese valor
-            return T;
+        if(th == nullptr){ // este es para en caso de que el nodo luego de las operaciones quedara nulo retorne ese valor
+            return nullptr;
         }
-        T->altura = 1 + max(altura(T->left), altura(T->right));
-        int factor = balance_factor(T);
-        rotate(T);
-        return T; // Devuelve el puntero al nodo modificado
+        th->altura = 1 + max(altura(th->left), altura(th->right));
+        int factor = balance_factor(th);
+        rotate(th);
+        return th; // Devuelve el puntero al nodo modificado
     }
 
 
@@ -147,7 +178,7 @@ public:
     bool remove(int dato){
         return removeNode(raiz,dato) != nullptr;
     }
-    Node* padree(int valor){
+    Node<T>* padree(int valor){
         return padre(raiz,valor);
     }
 
@@ -159,12 +190,13 @@ public:
         return search_Node(raiz, dato) != nullptr;
     }
 
+
     ~AVL() {
     }
 };
 
 int main() {
-    AVL arbol;
+    AVL<int> arbol;
 
     arbol.insert(4);
     arbol.insert(2);
@@ -173,16 +205,16 @@ int main() {
     arbol.insert(3);
     arbol.insert(5);
     arbol.insert(7);
-    Node* padre = arbol.padree(7);
+    Node<int>* padre = arbol.padree(7);
     if (padre != nullptr)
         cout << "El padre de 7 es: " << padre->value << endl;
     else
         cout << "No tiene padre" << endl;
 
-    int valor = 8;
-    cout << boolalpha << arbol.search(valor);
-    cout << boolalpha << arbol.remove(valor);
-    cout << boolalpha << arbol.search(valor);
+    int valor = 9;
+    cout << boolalpha << arbol.search(valor) << endl ;
+    cout << boolalpha << arbol.remove(valor) << endl;
+    cout << boolalpha << arbol.search(valor) << endl;
     //cout << "¿El valor " << valor << " esta en el arbol? " << (arbol.search(valor) ? "Sí" : "No") << endl;
 
     return 0;
