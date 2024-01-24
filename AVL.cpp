@@ -12,8 +12,15 @@ private:
     int altura(Node* temp){
         if(temp == nullptr){
             return 0;
+        }else{
+            int A_left = altura(temp->left);
+            int A_right = altura(temp->rigth);
+            if(A_left > A_right){
+                return A_left +1;
+            }else{
+                return A_right +1;
+            }
         }
-        temp->altura;
     }
     Node* raiz;
     Node* rotate_right(Node* T){
