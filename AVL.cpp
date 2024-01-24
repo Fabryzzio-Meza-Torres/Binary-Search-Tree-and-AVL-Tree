@@ -43,7 +43,26 @@ private:
     int factor_Equilibrio(Node* temp){
         return altura(temp->left)-altura(temp->rigth);
     }
-public:
+    Node* inserta(Node* T, int dato){
+        if(T ==nullptr){
+            return new Node(dato);
+        }else{
+            if(T->value < dato){
+                return inserta(T->left,dato);
+            }else{
+                return inserta(T->rigth,dato);
+            }
+        }
+        altura(T);
+        rotate(T);
+    }
+    Node* Busca(Node* T, int dato){
+
+    }
+    Node* Elimina(Node* T, int dato){
+
+    }
+    public:
     void insert(){
 
     }
