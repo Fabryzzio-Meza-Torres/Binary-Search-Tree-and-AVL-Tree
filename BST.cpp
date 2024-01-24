@@ -96,7 +96,7 @@ class BSTree{
             return node->data;
         }
         else{
-            minValue(node->right);
+            maxValue(node->right);
         }
     };
     void remove(NodeBT<T> *&node, T value){}{
