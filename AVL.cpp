@@ -12,7 +12,19 @@ struct Node {
 class AVL {
 private:
     Node* raiz;
-
+    Node* padre(Node* temp, int dato){
+        if(temp == nullptr || raiz->value == dato){
+            return nullptr;
+        }
+        else if ((temp->right != nullptr && temp->right->value == dato) ||
+                 (temp->left != nullptr && temp->left->value == dato)) {
+            return temp;
+        }
+        if (dato < temp->value)
+            return padre(temp->left, dato);
+        else
+            return padre(temp->right, dato);
+    }
     int altura(Node* temp) {
         if (temp == nullptr) {
             return 0;
@@ -135,6 +147,9 @@ public:
     bool remove(int dato){
         return removeNode(raiz,dato) != nullptr;
     }
+    Node* padree(int valor){
+        return padre(raiz,valor);
+    }
 
     void insert(int dato) {
         raiz = inserta(raiz, dato);
@@ -150,13 +165,19 @@ public:
 
 int main() {
     AVL arbol;
-    arbol.insert(5);
-    arbol.insert(3);
-    arbol.insert(7);
-    arbol.insert(2);
+
     arbol.insert(4);
+    arbol.insert(2);
     arbol.insert(6);
-    arbol.insert(8);
+    arbol.insert(1);
+    arbol.insert(3);
+    arbol.insert(5);
+    arbol.insert(7);
+    Node* padre = arbol.padree(7);
+    if (padre != nullptr)
+        cout << "El padre de 7 es: " << padre->value << endl;
+    else
+        cout << "No tiene padre" << endl;
 
     int valor = 8;
     cout << boolalpha << arbol.search(valor);
