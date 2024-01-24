@@ -4,15 +4,40 @@ struct Node{
     int value;
     Node* left;
     Node* rigth;
-    Node(int dato):value(dato), left(nullptr),rigth(nullptr) {}
-
+    int altura;
+    Node(int dato):value(dato),altura(0), left(nullptr),rigth(nullptr) {}
 };
 class AVL{
+private:
+    int altura(Node* temp){
+        if(temp == nullptr){
+            return 0;
+        }
+        temp->altura;
+    }
     Node* raiz;
+    Node* rotate_right(Node* T){
+        Node* temp = T->left;
+        T->left = temp->rigth;
+        temp->rigth = T;
+        T = temp;
+    };
+    Node* rotate_left(Node* T){
+        Node* temp = T;
+        temp = T->rigth;
+        Node* temp2 = T;
+        T->rigth = temp2->left;
+        temp2->left = T;
+        T = temp;
+    }
+    int factor_Equilibrio(Node* temp){
+        return altura(temp->left)-altura(temp->rigth);
+    }
+public:
     void insert();
     void eliminar();
     void buscar();
-    void 
+    void imprimir();
 
 };
 
