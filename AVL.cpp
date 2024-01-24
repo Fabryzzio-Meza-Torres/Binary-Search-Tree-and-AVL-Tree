@@ -13,13 +13,7 @@ private:
         if(temp == nullptr){
             return 0;
         }else{
-            int A_left = altura(temp->left);
-            int A_right = altura(temp->rigth);
-            if(A_left > A_right){
-                return A_left +1;
-            }else{
-                return A_right +1;
-            }
+            return 1+max(altura(temp->left),altura(temp->rigth));
         }
     }
     Node* raiz;
@@ -47,14 +41,15 @@ private:
         if(T ==nullptr){
             return new Node(dato);
         }else{
-            if(T->value < dato){
+            if(dato < T->value){
                 return inserta(T->left,dato);
-            }else{
+            }else if(dato > T->value){
                 return inserta(T->rigth,dato);
             }
+            T->altura = 1 + max(altura(T->left),altura(T->rigth));
+            //implementar la rotacion
+            
         }
-        altura(T);
-        rotate(T);
     }
     Node* Busca(Node* T, int dato){
 
