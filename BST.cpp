@@ -77,14 +77,63 @@ class BSTree{
     };
     string displayBFS(){};
     string displayDFS(){};
-    T minValue(){};
-    T maxValue(){};
-    void remove(T value){}{
-        if(find){
-
+    T minValue(NodeBT<T> *node){
+        if(node==nullptr){
+            throw("The tree is empty");
+        }
+        else if(node->left==nullptr){
+            return node->data;
         }
         else{
-            cout<<"El nodo que quiere eliminar no esta en el BST"<<endl;
+            minValue(node->left);
+        }
+    };
+    T maxValue(NodeBT<T> *node){
+        if(node==nullptr){
+            throw("The tree is empty");
+        }
+        else if(node->right==nullptr){
+            return node->data;
+        }
+        else{
+            minValue(node->right);
+        }
+    };
+    void remove(NodeBT<T> *&node, T value){}{
+        if(node==nullptr){
+            return;
+        }
+        else if(value<node->data){
+            remove(node->left, value);
+        }
+        else if(value>node->data){
+            remove(node->right, value);
+        }
+        else{
+            //Leaf
+            if(node->left == nullptr && node->right == nullptr){
+                delete node;
+                node= nullptr
+            }
+            //One child
+            else if(node->left== nullptr){
+                NodeBT<T> temp= node;
+                node = node->right;
+                delete temp;
+            }
+
+            else if(node->right==nullptr){
+                NodeBT<T> temp= node;
+                node = node->left;
+                delete temp;
+            }
+            //Two child
+            else{
+                T temp= maxValue(node->left);
+                node->data= temp;
+                remove(node->left, temp);
+            }
+
         }
     }
     int size(){};
