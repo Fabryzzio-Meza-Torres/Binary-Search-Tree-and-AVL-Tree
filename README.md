@@ -12,5 +12,5 @@ Implementation of Binary Search Tree and AVL Tree
 ![](rotaciones.png)
 
 ## Referencia APA
-- Presentación 06(AVL).(2024). Ojeda,B., **Algoritmo y estructura de datos: CS2023** (págs. 1-23).UTEC
-- Presentación 05(BST).(2024). Ojeda,B., **Algoritmo y estructura de datos: CS2023** (págs. 1-25).UTEC
+- Presentación 06(AVL).(2024). Ojeda,B., *Algoritmo y estructura de datos: CS2023* (págs. 1-23).UTEC
+- Presentación 05(BST).(2024). Ojeda,B., *Algoritmo y estructura de datos: CS2023* (págs. 1-25).UTEC
