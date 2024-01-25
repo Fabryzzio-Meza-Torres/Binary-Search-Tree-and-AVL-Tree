@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <vector>
 using namespace std;
 template<typename T>
 struct Node {
@@ -13,33 +14,14 @@ template<typename T>
 class AVL {
 private:
     Node<T>* raiz;
-    string displayInOrder(Node<T> *node, string &result) {
-        if(node==nullptr){
-            return result;
+    void inOrderT(Node<T>* temp, vector<T>& result) {
+        if (temp != nullptr) {
+            inOrderT(temp->left, result);
+            result.push_back(temp->value);
+            inOrderT(temp->right, result);
         }
-        displayInOrder(node->left, result);
-        result+= node->data + " ";
-        displayInOrder(node->right, result);
-        return result;
-    };
-    string displayPreOrder(Node<T> *node, string &result){
-        if(node==nullptr){
-            return result;
-        }
-        result+= node->data + " ";
-        displayInOrder(node->left, result);
-        displayInOrder(node->right, result);
-        return result;
-    };
-    string displayPostOrder(Node<T> *node, string &result){
-        if(node==nullptr){
-            return result;
-        }
-        displayInOrder(node->left, result);
-        displayInOrder(node->right, result);
-        result+= node->data + " ";
-        return result;
-    };
+    }
+
     Node<T>* padre(Node<T>* temp, int dato){
         if(temp == nullptr || raiz->value == dato){
             return nullptr;
@@ -176,7 +158,12 @@ private:
 public:
     AVL() : raiz(nullptr) {}
     bool remove(int dato){
-        return removeNode(raiz,dato) != nullptr;
+        if(removeNode(raiz,dato) != nullptr){
+            return true;
+        }else{
+            return false;
+        }
+        //return removeNode(raiz,dato) != nullptr;
     }
     Node<T>* padree(int valor){
         return padre(raiz,valor);
@@ -188,6 +175,11 @@ public:
 
     bool search(int dato) {
         return search_Node(raiz, dato) != nullptr;
+    }
+    vector<T> inOrder() {
+        vector<T> result;
+        inOrderT(raiz, result);
+        return result;
     }
 
 
@@ -211,11 +203,18 @@ int main() {
     else
         cout << "No tiene padre" << endl;
 
-    int valor = 9;
+    int valor = 3;
     cout << boolalpha << arbol.search(valor) << endl ;
-    cout << boolalpha << arbol.remove(valor) << endl;
+    cout << arbol.remove(valor) << endl;
     cout << boolalpha << arbol.search(valor) << endl;
     //cout << "¿El valor " << valor << " esta en el arbol? " << (arbol.search(valor) ? "Sí" : "No") << endl;
+    vector<int> inOrderResult = arbol.inOrder();
 
+    cout << "Inorden: ";
+    for (int elem : inOrderResult) {
+        cout << elem << " ";
+    }
+    cout << endl;
     return 0;
 }
+
