@@ -187,23 +187,23 @@ private:
     }
 
     Node<T>* removeNode(Node<T>* th, int dato) {
-        if (th == nullptr) {
+        if(search_Node(th,dato) == nullptr){
             return nullptr;
         }
+        else{
         if (th->value > dato) {
             th->left = removeNode(th->left, dato);
-        } else if (th->value < dato) {
+        }else if (th->value < dato) {
             th->right = removeNode(th->right, dato);
         } else {
             if (th->left == nullptr || th->right == nullptr) {
-                Node<T>* temp = th->left ? th->left : th->right; // si temp no es nulo el puntero se asigna T->left, caso contrario T->right;
+                Node<T>* temp = th->left ? th->left : th->right;
 
-                // Hoja
                 if (temp == nullptr) {
                     delete th;
                     return nullptr;
                 } else {
-                    if(th == root){
+                    if (th == root) {
                         root = temp;
                     }
                     th->left = temp->left;
@@ -213,29 +213,36 @@ private:
                 }
                 delete temp;
             } else {
-                //ambos hijos
-                Node<T>* temp = minValueNode(th->right); //trae el minimo valor del subarbol derecho del arbol
+                Node<T>* temp = minValueNode(th->right);
                 th->value = temp->value;
                 th->right = removeNode(th->right, temp->value);
             }
-        }
-        if(th == nullptr){ // este es para en caso de que el nodo luego de las operaciones quedara nulo retorne ese valor
+        }}
+
+        if (th == nullptr) {
             return nullptr;
         }
+
         th->height = 1 + max(height(th->left), height(th->right));
         int factor = balance_factor(th);
         rotate(th);
-        return th; // Devuelve el puntero al nodo modificado
+
+        return th;
     }
+
+
+
 
 
 public:
     AVL() : root(nullptr) {}
     bool remove(int dato){
-        if(removeNode(root,dato) != nullptr){
-            return true;
-        }else{
+        Node<T>* resultado = removeNode(root, dato);
+
+        if (resultado == nullptr) {
             return false;
+        } else {
+            return true;
         }
     }
     Node<T>* parent(int valor){

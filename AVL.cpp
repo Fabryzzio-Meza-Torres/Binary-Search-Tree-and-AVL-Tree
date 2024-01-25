@@ -41,11 +41,10 @@ int main(){
 
 
 
-    int valor = 3;
+    int valor = 9;
     cout << boolalpha << arbol.search(valor) << endl ;
-    cout << arbol.remove(valor) << endl;
+    cout << boolalpha<< arbol.remove(valor) << endl;
     cout << boolalpha << arbol.search(valor) << endl;
-    //cout << "¿El valor " << valor << " esta en el arbol? " << (arbol.search(valor) ? "Sí" : "No") << endl;
     vector<int> inOrderResult = arbol.inOrder();
     vector<int>prueba = arbol.PostOrder();
     vector<int>prueba1 = arbol.PreOrden();
