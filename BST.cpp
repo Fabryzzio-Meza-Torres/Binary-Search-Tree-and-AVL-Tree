@@ -47,8 +47,8 @@ int main()
 
     // Remove an element from the BST
     int valueToRemove = 30;
-    cout << "Removing " << valueToRemove << " from the BST." << endl;
-    bst.remove(bst.getRoot(), valueToRemove);
+    NodeBT<int> *root = bst.getRoot();
+    bst.remove(root, valueToRemove);
 
     // Display the BST after removal
     cout << "InOrder Traversal after removal: " << bst.displayInOrder(bst.getRoot(), inOrderResult) << endl;

@@ -50,7 +50,7 @@ public:
             insert(node->right, value);
     }
 
-    bool find(NodeBT<T> *&node, T value)
+    bool find(NodeBT<T> *node, T value)
     {
         if (node == nullptr)
         {
@@ -160,7 +160,9 @@ public:
     {
         if (node == nullptr)
         {
-            throw("The tree is empty");
+            cout << "The tree is empty"
+                 << " ";
+            return T();
         }
         else if (node->left == nullptr)
         {
@@ -168,7 +170,7 @@ public:
         }
         else
         {
-            minValue(node->left);
+            return minValue(node->left);
         }
     }
 
@@ -176,7 +178,9 @@ public:
     {
         if (node == nullptr)
         {
-            throw("The tree is empty");
+            cout << "The tree is empty"
+                 << " ";
+            return T();
         }
         else if (node->right == nullptr)
         {
@@ -184,9 +188,9 @@ public:
         }
         else
         {
-            maxValue(node->right);
+            return maxValue(node->right);
         }
-    };
+    }
     void remove(NodeBT<T> *&node, T value)
     {
         {
@@ -213,14 +217,14 @@ public:
                 // One child
                 else if (node->left == nullptr)
                 {
-                    NodeBT<T> temp = node;
+                    NodeBT<T> *temp = node;
                     node = node->right;
                     delete temp;
                 }
 
                 else if (node->right == nullptr)
                 {
-                    NodeBT<T> temp = node;
+                    NodeBT<T> *temp = node;
                     node = node->left;
                     delete temp;
                 }
