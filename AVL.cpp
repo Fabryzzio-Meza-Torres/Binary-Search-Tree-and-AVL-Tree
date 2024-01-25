@@ -1,5 +1,7 @@
 #include <iostream>
 #include <algorithm>
+#include <queue>
+#include <vector>
 using namespace std;
 template <typename T>
 struct Node
@@ -171,6 +173,78 @@ private:
         }
         return th;
     }
+    Node<T> *maxValueNode(Node<T> *node)
+    {
+        Node<T> *th = node;
+        while (th != nullptr && th->right != nullptr)
+        {
+            th = th->right;
+        }
+        return th;
+    }
+    Node<T> *lowest_Common_Ancesto(Node<T> *temp, int x, int y)
+    {
+        if (temp == nullptr)
+        {
+            return nullptr;
+        }
+        Node<T> *parent1 = padre(temp, x);
+        Node<T> *parent2 = padre(temp, y);
+
+        if (parent1 == nullptr || parent2 == nullptr)
+        {
+            return nullptr;
+        }
+
+        if (parent1->value == parent2->value)
+        {
+            return parent1;
+        }
+        return raiz;
+    }
+    Node<T> *Successor(Node<T> *temp, T value)
+    {
+        Node<T> *node = temp;
+        Node<T> *successor = nullptr;
+
+        while (node != nullptr)
+        {
+            if (node->value == value)
+            {
+                if (node->right != nullptr)
+                {
+                    successor = minValueNode(node->right);
+                }
+                else
+                {
+                    Node<T> *ancestro_comun = lowest_Common_Ancesto(temp, value, maxValueNode(temp)->value);
+                    if (ancestro_comun != nullptr)
+                    {
+                        if (ancestro_comun->value > value)
+                        {
+                            successor = ancestro_comun;
+                        }
+                        else
+                        {
+                            successor = nullptr;
+                        }
+                    }
+                }
+                break;
+            }
+            else if (node->value > value)
+            {
+                successor = node;
+                node = node->left;
+            }
+            else
+            {
+                node = node->right;
+            }
+        }
+
+        return successor;
+    }
 
     Node<T> *removeNode(Node<T> *th, int dato)
     {
@@ -233,11 +307,27 @@ public:
     AVL() : raiz(nullptr) {}
     bool remove(int dato)
     {
-        return removeNode(raiz, dato) != nullptr;
+        if (removeNode(raiz, dato) != nullptr)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     Node<T> *padree(int valor)
     {
         return padre(raiz, valor);
+    }
+
+    Node<T> *lowestCommon(int x, int y)
+    {
+        return lowest_Common_Ancesto(raiz, x, y);
+    }
+    Node<T> *Sucesor(int value)
+    {
+        return Successor(raiz, value);
     }
 
     void insert(int dato)
@@ -248,6 +338,50 @@ public:
     bool search(int dato)
     {
         return search_Node(raiz, dato) != nullptr;
+    }
+    vector<T> inOrder()
+    {
+        vector<T> result;
+        inOrderT(raiz, result);
+        return result;
+    }
+    vector<T> PostOrder()
+    {
+        vector<T> result;
+        PostOrderT(raiz, result);
+        return result;
+    }
+    vector<T> PreOrden()
+    {
+        vector<T> result;
+        PreOrdenT(raiz, result);
+        return result;
+    }
+    void BFS()
+    {
+        queue<Node<T> *> temp;
+        if (raiz == nullptr)
+        {
+            return;
+        }
+        else
+        {
+            temp.push(raiz);
+        }
+        while (!temp.empty())
+        {
+            Node<T> *node = temp.front();
+            temp.pop();
+            cout << node->value << " ";
+            if (node->left != nullptr)
+            {
+                temp.push(node->left);
+            }
+            if (node->right != nullptr)
+            {
+                temp.push(node->right);
+            }
+        }
     }
 
     ~AVL()
@@ -271,12 +405,46 @@ int main()
         cout << "El padre de 7 es: " << padre->value << endl;
     else
         cout << "No tiene padre" << endl;
+    Node<int> *mas_bajo_comun = arbol.lowestCommon(5, 7);
+    if (mas_bajo_comun != nullptr)
+        cout << "El mas bajo comun es: " << mas_bajo_comun->value << endl;
+    else
+        cout << "No hay mas bajo comun" << endl;
 
-    int valor = 9;
+    Node<int> *sucesor = arbol.Sucesor(2);
+    if (mas_bajo_comun != nullptr)
+        cout << "El sucesor es: " << sucesor->value << endl;
+    else
+        cout << "No hay sucesor" << endl;
+
+    int valor = 3;
     cout << boolalpha << arbol.search(valor) << endl;
-    cout << boolalpha << arbol.remove(valor) << endl;
+    cout << arbol.remove(valor) << endl;
     cout << boolalpha << arbol.search(valor) << endl;
     // cout << "¿El valor " << valor << " esta en el arbol? " << (arbol.search(valor) ? "Sí" : "No") << endl;
+    vector<int> inOrderResult = arbol.inOrder();
+    vector<int> prueba = arbol.PostOrder();
+    vector<int> prueba1 = arbol.PreOrden();
 
+    cout << "Inorden: ";
+    for (int elem : inOrderResult)
+    {
+        cout << elem << " ";
+    }
+    cout << endl;
+    cout << "Postorden: ";
+    for (int elem : prueba)
+    {
+        cout << elem << " ";
+    }
+    cout << endl;
+    cout << "Preorden: ";
+    for (int elem : prueba1)
+    {
+        cout << elem << " ";
+    }
+    cout << endl;
+    cout << "BFS:";
+    arbol.BFS();
     return 0;
 }
