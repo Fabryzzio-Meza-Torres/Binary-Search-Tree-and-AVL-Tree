@@ -1,202 +1,67 @@
 #include <iostream>
 #include <queue>
 #include <stack>
+#include "BST.h"
 using namespace std;
 
-template <typename T>
-struct NodeBT
+int main()
 {
-    T data;
-    NodeBT *left;
-    NodeBT *right;
-    NodeBT() : left(nullptr), right(nullptr) {}
-    NodeBT(T value) : data(value), left(nullptr), right(nullptr) {}
-    void Killself()
-    {
-        if (left)
-        {
-            left->Killself();
-        }
-        if (right)
-        {
-            right->Killself();
-        }
-        delete this;
-    }
-};
+    BSTree<int> bst;
 
-template <typename T>
-class BSTree
-{
-private:
-    NodeBT *root;
+    // Insert elements into the BST
+    bst.insert(bst.getRoot(), 8);
+    bst.insert(bst.getRoot(), 3);
+    bst.insert(bst.getRoot(), 1);
+    bst.insert(bst.getRoot(), 6);
+    bst.insert(bst.getRoot(), 4);
+    bst.insert(bst.getRoot(), 7);
+    bst.insert(bst.getRoot(), 10);
+    bst.insert(bst.getRoot(), 14);
+    bst.insert(bst.getRoot(), 13);
 
-public:
-    BSTree() : root(nullptr){};
-    void insert(NodeBT *node, T value)
-    {
-        if (node == nullptr)
-            node = new NodeBT<T>(value);
-        else if (value < node->data)
-            insert(node->left, value);
-        else
-            insert(node->right, value);
-    };
-    bool find(NodeBT *node, T value)
-    {
-        if (node == nullptr)
-        {
-            return false;
-        }
-        else if (value < node->data)
-        {
-            return find(node->left, value);
-        }
-        else if (value > node->data)
-        {
-            return find(node->right, value);
-        }
-        else
-            return true;
-    };
-    string displayInOrder(NodeBT<T> *node, string &result)
-    {
-        if (node == nullptr)
-        {
-            return result
-        }
-        displayInOrder(node->left, result);
-        result += node->data + " ";
-        displayInOrder(node->right, result);
-        return result;
-    };
-    string displayPreOrder(NodeBT<T> *node, string &result)
-    {
-        if (node == nullptr)
-        {
-            return result
-        }
-        result += node->data + " ";
-        displayInOrder(node->left, result);
-        displayInOrder(node->right, result);
-        return result;
-    };
-    string displayPostOrder(NodeBT<T> *node, string &result)
-    {
-        if (node == nullptr)
-        {
-            return result
-        }
-        displayInOrder(node->left, result);
-        displayInOrder(node->right, result);
-        result += node->data + " ";
-        return result;
-    };
-    string displayBFS(){};
-    string displayDFS(){};
-    T minValue(NodeBT<T> *node)
-    {
-        if (node == nullptr)
-        {
-            throw("The tree is empty");
-        }
-        else if (node->left == nullptr)
-        {
-            return node->data;
-        }
-        else
-        {
-            minValue(node->left);
-        }
-    };
-    T maxValue(NodeBT<T> *node)
-    {
-        if (node == nullptr)
-        {
-            throw("The tree is empty");
-        }
-        else if (node->right == nullptr)
-        {
-            return node->data;
-        }
-        else
-        {
-            maxValue(node->right);
-        }
-    };
-    void remove(NodeBT<T> *&node, T value) {}
-    {
-        if (node == nullptr)
-        {
-            return;
-        }
-        else if (value < node->data)
-        {
-            remove(node->left, value);
-        }
-        else if (value > node->data)
-        {
-            remove(node->right, value);
-        }
-        else
-        {
-            // Leaf
-            if (node->left == nullptr && node->right == nullptr)
-            {
-                delete node;
-                node = nullptr
-            }
-            // One child
-            else if (node->left == nullptr)
-            {
-                NodeBT<T> temp = node;
-                node = node->right;
-                delete temp;
-            }
+    // Display the BST using different traversal methods
+    string inOrderResult = "";
+    cout << "InOrder Traversal: " << bst.displayInOrder(bst.getRoot(), inOrderResult) << endl;
 
-            else if (node->right == nullptr)
-            {
-                NodeBT<T> temp = node;
-                node = node->left;
-                delete temp;
-            }
-            // Two child
-            else
-            {
-                T temp = maxValue(node->left);
-                node->data = temp;
-                remove(node->left, temp);
-            }
-        }
-    }
-    int Tree_size()
-    {
-        if (root == nullptr)
-        {
-            return 0;
-        }
-        else
-        {
-            return 1 + size(root->left) + size(root->right);
-        }
-    }
+    string preOrderResult = "";
+    cout << "PreOrder Traversal: " << bst.displayPreOrder(bst.getRoot(), preOrderResult) << endl;
 
-    int height(NodeBT<T> *node)
-    {
-        if (node == nullptr)
-        {
-            return 0;
-        }
-        else
-        {
-            return size(node->left) + size(node->right) + 1;
-        }
-    }
-    T predecessor(T value)
-    {
-        T temp = MaxValue(root->left);
-    }
-    T successor(T value){};
-    void clear(){};
-    ~BSTree() {}
-};
+    string postOrderResult = "";
+    cout << "PostOrder Traversal: " << bst.displayPostOrder(bst.getRoot(), postOrderResult) << endl;
+
+    cout << "BFS Traversal: " << bst.displayBFS() << endl;
+    cout << "DFS Traversal: " << bst.displayDFS() << endl;
+
+    // Find elements in the BST
+    int valueToFind = 40;
+    cout << "Is " << valueToFind << " in the BST? " << (bst.find(bst.getRoot(), valueToFind) ? "Yes" : "No") << endl;
+
+    // Find the minimum and maximum values in the BST
+    cout << "Minimum value: " << bst.minValue(bst.getRoot()) << endl;
+    cout << "Maximum value: " << bst.maxValue(bst.getRoot()) << endl;
+
+    // Find the predecessor and successor of a value in the BST
+    int valueToFindPredecessorSuccessor = 40;
+    cout << "Predecessor of " << valueToFindPredecessorSuccessor << ": " << bst.predecessor(valueToFindPredecessorSuccessor) << endl;
+    cout << "Successor of " << valueToFindPredecessorSuccessor << ": " << bst.successor(valueToFindPredecessorSuccessor) << endl;
+
+    // Remove an element from the BST
+    int valueToRemove = 30;
+    cout << "Removing " << valueToRemove << " from the BST." << endl;
+    bst.remove(bst.getRoot(), valueToRemove);
+
+    // Display the BST after removal
+    cout << "InOrder Traversal after removal: " << bst.displayInOrder(bst.getRoot(), inOrderResult) << endl;
+
+    // Display the size and height of the BST
+    cout << "Size of the BST: " << bst.Tree_size(bst.getRoot()) << endl;
+    cout << "Height of the BST: " << bst.height(bst.getRoot()) << endl;
+
+    // Clear the BST
+    bst.clear();
+
+    // Display the BST after clearing
+    cout << "InOrder Traversal after clearing: " << bst.displayInOrder(bst.getRoot(), inOrderResult) << endl;
+
+    return 0;
+}
