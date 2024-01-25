@@ -43,11 +43,31 @@ public:
     void insert(NodeBT<T> *node, T value)
     {
         if (node == nullptr)
-            node = new NodeBT<T>(value);
+        {
+            root = new NodeBT<T>(value);
+        }
         else if (value < node->data)
-            insert(node->left, value);
-        else
-            insert(node->right, value);
+        {
+            if (node->left == nullptr)
+            {
+                node->left = new NodeBT<T>(value);
+            }
+            else
+            {
+                insert(node->left, value);
+            }
+        }
+        else if (value > node->data)
+        {
+            if (node->right == nullptr)
+            {
+                node->right = new NodeBT<T>(value);
+            }
+            else
+            {
+                insert(node->right, value);
+            }
+        }
     }
 
     bool find(NodeBT<T> *node, T value)
@@ -69,65 +89,56 @@ public:
     }
     string displayInOrder(NodeBT<T> *node, string &result)
     {
-        if (node == nullptr)
-        {
-            return result;
-        }
+        if (node == nullptr) return result;
         displayInOrder(node->left, result);
-        result += node->data + " ";
+        result += to_string(node->data) + " ";
         displayInOrder(node->right, result);
         return result;
     }
-    string displayPreOrder(NodeBT<T> *node, string &result)
-    {
-        if (node == nullptr)
-        {
-            return result;
-        }
-        result += node->data + " ";
-        displayInOrder(node->left, result);
-        displayInOrder(node->right, result);
-        return result;
-    }
+string displayPreOrder(NodeBT<T> *node, string &result)
+{
+    if (node == nullptr) return result;
+    result += to_string(node->data) + " ";
+    displayPreOrder(node->left, result);
+    displayPreOrder(node->right, result);
+    return result;
+}
+
     string displayPostOrder(NodeBT<T> *node, string &result)
-    {
-        if (node == nullptr)
-        {
-            return result;
-        }
-        displayInOrder(node->left, result);
-        displayInOrder(node->right, result);
-        result += node->data + " ";
+    {   if (node == nullptr) return result;
+        displayPostOrder(node->left, result);
+        displayPostOrder(node->right, result);
+        result += to_string(node->data) + " ";
         return result;
     }
-    string displayBFS()
+string displayBFS()
+{
+    if (root == nullptr)
     {
-        if (root == nullptr)
-        {
-            return "";
-        }
-        else
-        {
-            string result = "";
-            queue<NodeBT<T> *> q;
-            q.push(root);
-            while (!q.empty())
-            {
-                NodeBT<T> *temp = q.front();
-                q.pop();
-                result += temp->data + " ";
-                if (temp->left != nullptr)
-                {
-                    q.push(temp->left);
-                }
-                if (temp->right != nullptr)
-                {
-                    q.push(temp->right);
-                }
-            }
-            return result;
-        }
+        return "";
     }
+    else
+    {
+        string result = "";
+        queue<NodeBT<T> *> q;
+        q.push(root);
+        while (!q.empty())
+        {
+            NodeBT<T> *temp = q.front();
+            q.pop();
+            result += to_string(temp->data) + " ";  
+            if (temp->left != nullptr)
+            {
+                q.push(temp->left);
+            }
+            if (temp->right != nullptr)
+            {
+                q.push(temp->right);
+            }
+        }
+        return result;
+    }
+}
     string displayDFS()
     {
         if (root == nullptr)
@@ -143,7 +154,7 @@ public:
             {
                 NodeBT<T> *temp = s.top();
                 s.pop();
-                result += temp->data + " ";
+                result += to_string(temp->data) + " ";
                 if (temp->left != nullptr)
                 {
                     s.push(temp->left);
@@ -319,7 +330,7 @@ public:
                 }
                 else
                 {
-                    temp->right;
+                    temp=temp->right;
                     successor = temp;
                 }
             }

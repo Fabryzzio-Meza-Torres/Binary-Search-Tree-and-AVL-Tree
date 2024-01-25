@@ -9,16 +9,13 @@ int main()
     BSTree<int> bst;
 
     // Insert elements into the BST
-    bst.insert(bst.getRoot(), 8);
-    bst.insert(bst.getRoot(), 3);
-    bst.insert(bst.getRoot(), 1);
-    bst.insert(bst.getRoot(), 6);
-    bst.insert(bst.getRoot(), 4);
-    bst.insert(bst.getRoot(), 7);
-    bst.insert(bst.getRoot(), 10);
-    bst.insert(bst.getRoot(), 14);
-    bst.insert(bst.getRoot(), 13);
-
+    bst.insert(bst.getRoot(), 50);
+    bst.insert(bst.getRoot(), 30);
+    bst.insert(bst.getRoot(), 20);
+    bst.insert(bst.getRoot(), 40);
+    bst.insert(bst.getRoot(), 70);
+    bst.insert(bst.getRoot(), 60);
+    bst.insert(bst.getRoot(), 80);
     // Display the BST using different traversal methods
     string inOrderResult = "";
     cout << "InOrder Traversal: " << bst.displayInOrder(bst.getRoot(), inOrderResult) << endl;
