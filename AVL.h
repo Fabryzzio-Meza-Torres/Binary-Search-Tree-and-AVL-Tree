@@ -15,6 +15,16 @@ template<typename T>
 class AVL {
 private:
     Node<T>* root;
+    void destroy_trees(Node<T>* nodo) {
+        if(nodo == nullptr){
+            return;
+        }
+        else {
+            destroy_trees(nodo->left);
+            destroy_trees(nodo->right);
+            delete nodo;
+        }
+    }
     void inOrderT(Node<T>* temp, vector<T>& result) {
         if (temp != nullptr) {
             inOrderT(temp->left, result);
@@ -299,5 +309,6 @@ public:
         return maxValueNode(lowest_common_Node->left);}
 
     ~AVL() {
+        destroy_trees(root);
     }
 };
