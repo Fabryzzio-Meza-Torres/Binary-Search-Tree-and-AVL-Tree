@@ -126,6 +126,58 @@ private:
         }
         return th;
     }
+    Node<T>* maxValueNode(Node<T>* node){
+        Node<T>* th = node;
+        while(th != nullptr && th->right != nullptr){
+            th = th->right;
+        }
+        return th;
+    }
+    Node<T>* lowest_Common_Ancesto(Node<T>* temp, int x,int y){
+        if (temp == nullptr) {
+            return nullptr;
+        }
+        Node<T>* parent1 = padre(temp, x);
+        Node<T>* parent2 = padre(temp, y);
+
+        if (parent1 == nullptr || parent2 == nullptr) {
+            return nullptr;
+        }
+
+        if (parent1->value == parent2->value) {
+            return parent1;
+        }
+        return raiz;
+    }
+    Node<T>* Successor(Node<T>* temp, T value) {
+        Node<T>* node = temp;
+        Node<T>* successor = nullptr;
+
+        while (node != nullptr) {
+            if (node->value == value) {
+                if (node->right != nullptr) {
+                    successor = minValueNode(node->right);
+                } else {
+                    Node<T>* ancestro_comun = lowest_Common_Ancesto(temp, value, maxValueNode(temp)->value);
+                    if (ancestro_comun != nullptr) {
+                        if(ancestro_comun->value > value){
+                            successor = ancestro_comun;
+                        }else{
+                            successor = nullptr;
+                        }
+                    }
+                }
+                break;
+            } else if (node->value > value) {
+                successor = node;
+                node = node->left;
+            } else {
+                node = node->right;
+            }
+        }
+
+        return successor;
+    }
 
     Node<T>* removeNode(Node<T>* th, int dato) {
         if (th == nullptr) {
@@ -181,6 +233,13 @@ public:
     }
     Node<T>* padree(int valor){
         return padre(raiz,valor);
+    }
+
+    Node<T>* lowestCommon(int x, int y){
+        return lowest_Common_Ancesto(raiz,x,y);
+    }
+    Node<T>* Sucesor(int value){
+        return Successor(raiz,value);
     }
 
     void insert(int dato) {
@@ -244,6 +303,18 @@ int main() {
         cout << "El padre de 7 es: " << padre->value << endl;
     else
         cout << "No tiene padre" << endl;
+    Node<int>* mas_bajo_comun = arbol.lowestCommon(5,7);
+    if (mas_bajo_comun != nullptr)
+        cout << "El mas bajo comun es: " << mas_bajo_comun->value << endl;
+    else
+        cout << "No hay mas bajo comun" << endl;
+
+    Node<int>* sucesor = arbol.Sucesor(2);
+    if (mas_bajo_comun != nullptr)
+        cout << "El sucesor es: " << sucesor->value << endl;
+    else
+        cout << "No hay sucesor" << endl;
+
 
     int valor = 3;
     cout << boolalpha << arbol.search(valor) << endl ;
