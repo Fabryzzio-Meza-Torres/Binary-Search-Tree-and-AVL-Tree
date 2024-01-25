@@ -21,6 +21,20 @@ private:
             inOrderT(temp->right, result);
         }
     }
+    void PostOrderT(Node<T>* temp, vector<T>&result){
+        if(temp != nullptr){
+            PostOrderT(temp->left, result);
+            PostOrderT(temp->right, result);
+            result.push_back(temp->value);
+        }
+    }
+    void PreOrdenT(Node<T>* temp,vector<T>&result){
+        if(temp != nullptr){
+            result.push_back(temp->value);
+            PreOrdenT(temp->left,result);
+            PreOrdenT(temp->right,result);
+        }
+    }
 
     Node<T>* padre(Node<T>* temp, int dato){
         if(temp == nullptr || raiz->value == dato){
@@ -181,6 +195,16 @@ public:
         inOrderT(raiz, result);
         return result;
     }
+    vector<T>PostOrder(){
+        vector<T>result;
+        PostOrderT(raiz,result);
+        return result;
+    }
+    vector<T>PreOrden(){
+        vector<T>result;
+        PreOrdenT(raiz,result);
+        return result;
+    }
 
 
     ~AVL() {
@@ -209,12 +233,23 @@ int main() {
     cout << boolalpha << arbol.search(valor) << endl;
     //cout << "¿El valor " << valor << " esta en el arbol? " << (arbol.search(valor) ? "Sí" : "No") << endl;
     vector<int> inOrderResult = arbol.inOrder();
+    vector<int>prueba = arbol.PostOrder();
+    vector<int>prueba1 = arbol.PreOrden();
 
     cout << "Inorden: ";
     for (int elem : inOrderResult) {
         cout << elem << " ";
     }
     cout << endl;
+    cout << "Postorden: ";
+    for (int elem : prueba) {
+        cout << elem << " ";
+    }
+    cout << endl;
+    cout << "Preorden: ";
+    for (int elem : prueba1) {
+        cout << elem << " ";
+    }
     return 0;
 }
 
