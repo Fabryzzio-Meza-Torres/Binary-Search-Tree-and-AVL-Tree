@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <queue>
 #include <vector>
 using namespace std;
 template<typename T>
@@ -177,7 +178,6 @@ public:
         }else{
             return false;
         }
-        //return removeNode(raiz,dato) != nullptr;
     }
     Node<T>* padree(int valor){
         return padre(raiz,valor);
@@ -205,7 +205,24 @@ public:
         PreOrdenT(raiz,result);
         return result;
     }
-
+    void BFS() {
+        queue<Node<T>*> temp;
+        if (raiz == nullptr) {
+            return;
+        }
+        temp.push(raiz);
+        while (!temp.empty()) {
+            Node<T>* node = temp.front();
+            temp.pop();
+            cout << node->value << " ";
+            if (node->left != nullptr) {
+                temp.push(node->left);
+            }
+            if (node->right != nullptr) {
+                temp.push(node->right);
+            }
+        }
+    }
 
     ~AVL() {
     }
@@ -250,6 +267,8 @@ int main() {
     for (int elem : prueba1) {
         cout << elem << " ";
     }
+    cout << endl;
+    cout << "BFS:";
+    arbol.BFS();
     return 0;
 }
-
