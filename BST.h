@@ -14,6 +14,7 @@ struct NodeBT
     NodeBT(T value) : data(value), left(nullptr), right(nullptr) {}
     void Killself()
     {
+
         if (left)
         {
             left->Killself();
@@ -22,6 +23,7 @@ struct NodeBT
         {
             right->Killself();
         }
+
         delete this;
     }
 };
@@ -89,56 +91,60 @@ public:
     }
     string displayInOrder(NodeBT<T> *node, string &result)
     {
-        if (node == nullptr) return result;
+        if (node == nullptr)
+            return result;
         displayInOrder(node->left, result);
         result += to_string(node->data) + " ";
         displayInOrder(node->right, result);
         return result;
     }
-string displayPreOrder(NodeBT<T> *node, string &result)
-{
-    if (node == nullptr) return result;
-    result += to_string(node->data) + " ";
-    displayPreOrder(node->left, result);
-    displayPreOrder(node->right, result);
-    return result;
-}
+    string displayPreOrder(NodeBT<T> *node, string &result)
+    {
+        if (node == nullptr)
+            return result;
+        result += to_string(node->data) + " ";
+        displayPreOrder(node->left, result);
+        displayPreOrder(node->right, result);
+        return result;
+    }
 
     string displayPostOrder(NodeBT<T> *node, string &result)
-    {   if (node == nullptr) return result;
+    {
+        if (node == nullptr)
+            return result;
         displayPostOrder(node->left, result);
         displayPostOrder(node->right, result);
         result += to_string(node->data) + " ";
         return result;
     }
-string displayBFS()
-{
-    if (root == nullptr)
+    string displayBFS()
     {
-        return "";
-    }
-    else
-    {
-        string result = "";
-        queue<NodeBT<T> *> q;
-        q.push(root);
-        while (!q.empty())
+        if (root == nullptr)
         {
-            NodeBT<T> *temp = q.front();
-            q.pop();
-            result += to_string(temp->data) + " ";  
-            if (temp->left != nullptr)
-            {
-                q.push(temp->left);
-            }
-            if (temp->right != nullptr)
-            {
-                q.push(temp->right);
-            }
+            return "";
         }
-        return result;
+        else
+        {
+            string result = "";
+            queue<NodeBT<T> *> q;
+            q.push(root);
+            while (!q.empty())
+            {
+                NodeBT<T> *temp = q.front();
+                q.pop();
+                result += to_string(temp->data) + " ";
+                if (temp->left != nullptr)
+                {
+                    q.push(temp->left);
+                }
+                if (temp->right != nullptr)
+                {
+                    q.push(temp->right);
+                }
+            }
+            return result;
+        }
     }
-}
     string displayDFS()
     {
         if (root == nullptr)
@@ -330,7 +336,7 @@ string displayBFS()
                 }
                 else
                 {
-                    temp=temp->right;
+                    temp = temp->right;
                     successor = temp;
                 }
             }

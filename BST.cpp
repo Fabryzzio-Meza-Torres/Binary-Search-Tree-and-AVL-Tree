@@ -48,7 +48,8 @@ int main()
     bst.remove(root, valueToRemove);
 
     // Display the BST after removal
-    cout << "InOrder Traversal after removal: " << bst.displayInOrder(bst.getRoot(), inOrderResult) << endl;
+    string inorderResult = "";
+    cout << "InOrder Traversal after removal: " << bst.displayInOrder(bst.getRoot(), inorderResult) << endl;
 
     // Display the size and height of the BST
     cout << "Size of the BST: " << bst.Tree_size(bst.getRoot()) << endl;
@@ -58,7 +59,8 @@ int main()
     bst.clear();
 
     // Display the BST after clearing
-    cout << "InOrder Traversal after clearing: " << bst.displayInOrder(bst.getRoot(), inOrderResult) << endl;
+    string InorderResult = "";
+    cout << "InOrder Traversal after clearing: " << bst.displayInOrder(bst.getRoot(), InorderResult) << endl;
 
     return 0;
 }
