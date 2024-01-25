@@ -209,8 +209,9 @@ public:
         queue<Node<T>*> temp;
         if (raiz == nullptr) {
             return;
+        }else{
+            temp.push(raiz);
         }
-        temp.push(raiz);
         while (!temp.empty()) {
             Node<T>* node = temp.front();
             temp.pop();
